@@ -20,9 +20,15 @@ Biblioteki LIVE.COM do strumieni multimedialnych.
 %prep
 %setup -q -n live
 
+# no <strstream.h> in gcc 3.3 - but... this API is not used anyway
+echo > groupsock/strstream.h
+
 %build
 ./genMakefiles linux
-%{__make}
+%{__make} \
+	C_COMPILER="%{__cc}" \
+	CPLUSPLUS_COMPILER="%{__cxx}" \
+	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcflags} -DSOCKLEN_T=socklen_t"
 
 %install
 rm -rf $RPM_BUILD_ROOT
