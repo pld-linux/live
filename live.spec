@@ -8,8 +8,9 @@ License:	LGPL
 Group:		Libraries
 Source0:	http://www.live.com/liveMedia/public/%{name}.%{version}.tar.gz
 # Source0-md5:	141bb0a395320c7041c2f81ec5004190
-BuildRequires:	libstdc++-devel
 URL:		http://live.sourceforge.net/
+BuildRequires:	libstdc++-devel
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
