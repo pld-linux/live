@@ -1,13 +1,13 @@
 Summary:	LIVE.COM libraries for streaming media
 Summary(pl):	Biblioteki LIVE.COM do strumieni multimedialnych
 Name:		live
-Version:	2004.06.17
+Version:	2004.08.24
 Release:	1
 Epoch:		2
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.live.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	de0a9bd08fce8980bd103114d87f0c81
+# Source0-md5:	2671309e63df2f48c45f6d168befe681
 BuildRequires:	libstdc++-devel
 URL:		http://live.sourceforge.net/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -26,6 +26,7 @@ echo > groupsock/strstream.h
 
 %build
 ./genMakefiles linux
+sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
