@@ -3,7 +3,7 @@ Summary(pl):	Biblioteki LIVE.COM do strumieni multimedialnych
 Name:		live
 Version:	2004.04.23
 Release:	1
-#Epoch:		2
+Epoch:		2
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.live.com/liveMedia/public/%{name}.%{version}.tar.gz
