@@ -1,13 +1,13 @@
 Summary:	LIVE.COM libraries for streaming media
 Summary(pl):	Biblioteki LIVE.COM do strumieni multimedialnych
 Name:		live
-Version:	2004.04.09
-Release:	0.1
-Epoch:		2
+Version:	2004.04.23
+Release:	1
+#Epoch:		2
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.live.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	1c9595533f177f7c4d333e860b8505cd
+# Source0-md5:	a19bdc8ce961925b2e5b0db36bff7d25
 URL:		http://live.sourceforge.net/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
