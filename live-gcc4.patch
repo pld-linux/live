@@ -1,0 +1,22 @@
+--- live/liveMedia/include/AVIFileSink.hh.orig	2005-09-07 00:44:46.000000000 +0200
++++ live/liveMedia/include/AVIFileSink.hh	2006-02-12 23:00:12.016700250 +0100
+@@ -79,7 +79,7 @@
+ 
+   unsigned addWord(unsigned word); // outputs "word" in little-endian order
+   unsigned addHalfWord(unsigned short halfWord);
+-  unsigned AVIFileSink::addByte(unsigned char byte) {
++  unsigned addByte(unsigned char byte) {
+     putc(byte, fOutFid);
+     return 1;
+   }
+--- live/liveMedia/include/QuickTimeFileSink.hh.orig	2005-09-07 00:44:46.000000000 +0200
++++ live/liveMedia/include/QuickTimeFileSink.hh	2006-02-12 22:51:46.101082500 +0100
+@@ -87,7 +87,7 @@
+ 
+   unsigned addWord(unsigned word);
+   unsigned addHalfWord(unsigned short halfWord);
+-  unsigned QuickTimeFileSink::addByte(unsigned char byte) {
++  unsigned addByte(unsigned char byte) {
+     putc(byte, fOutFid);
+     return 1;
+   }
