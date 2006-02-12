@@ -2,16 +2,19 @@ Summary:	LIVE555 libraries for streaming media
 Summary(pl):	Biblioteki LIVE555 do strumieni multimedialnych
 Name:		live
 Version:	2005.09.06
-Release:	1
+Release:	2
 Epoch:		2
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
 # Source0-md5:	9512b7a4958c2a3628a8e9c35cfcaf74
+Patch0:		%{name}-gcc4.patch
 URL:		http://www.live555.com/liveMedia/
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 LIVE555 libraries for streaming media.
@@ -21,9 +24,7 @@ Biblioteki LIVE555 do strumieni multimedialnych.
 
 %prep
 %setup -q -n live
-
-# no <strstream.h> in gcc 3.3 - but... this API is not used anyway
-echo > groupsock/strstream.h
+%patch0 -p1
 
 %build
 ./genMakefiles linux
