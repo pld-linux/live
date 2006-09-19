@@ -9,6 +9,7 @@ Group:		Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
 # Source0-md5:	4bda8a9f8ebfdace7015ab2dd5648339
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
+# Source1-md5:	5361fea03f65085261fb624ae6cbaa38
 URL:		http://www.live555.com/liveMedia/
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
