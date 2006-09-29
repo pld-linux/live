@@ -2,7 +2,7 @@ Summary:	LIVE555 libraries for streaming media
 Summary(pl):	Biblioteki LIVE555 do strumieni multimedialnych
 Name:		live
 Version:	2006.09.18
-Release:	1
+Release:	2
 Epoch:		2
 License:	LGPL
 Group:		Libraries
