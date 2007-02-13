@@ -1,5 +1,5 @@
 Summary:	LIVE555 libraries for streaming media
-Summary(pl.UTF-8):   Biblioteki LIVE555 do strumieni multimedialnych
+Summary(pl.UTF-8):	Biblioteki LIVE555 do strumieni multimedialnych
 Name:		live
 Version:	2006.10.07
 Release:	1
