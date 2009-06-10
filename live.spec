@@ -1,15 +1,15 @@
 Summary:	LIVE555 libraries for streaming media
 Summary(pl.UTF-8):	Biblioteki LIVE555 do strumieni multimedialnych
 Name:		live
-Version:	2008.07.06
+Version:	2009.06.02
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	16637d737c0683feb23c85811b5746c5
+# Source0-md5:	088f848b64cef1d54034bc24cfa3c156
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	07850cc7701c25bcedaf3dbace713f29
+# Source1-md5:	c79bc6acd34e2593f2e98332652ad95c
 URL:		http://www.live555.com/liveMedia/
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
