@@ -36,17 +36,13 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/liveMedia/liveMedia
-install -d $RPM_BUILD_ROOT%{_libdir}/liveMedia/groupsock
-install -d $RPM_BUILD_ROOT%{_libdir}/liveMedia/UsageEnvironment
-install -d $RPM_BUILD_ROOT%{_libdir}/liveMedia/BasicUsageEnvironment
+install -d $RPM_BUILD_ROOT%{_libdir}/liveMedia/{liveMedia,groupsock,UsageEnvironment,BasicUsageEnvironment} \
+	$RPM_BUILD_ROOT%{_includedir}/liveMedia
 
 install liveMedia/libliveMedia.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/liveMedia
 install groupsock/libgroupsock.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/groupsock
 install UsageEnvironment/libUsageEnvironment.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/UsageEnvironment
 install BasicUsageEnvironment/libBasicUsageEnvironment.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/BasicUsageEnvironment
-
-install -d $RPM_BUILD_ROOT%{_includedir}/liveMedia
 
 install liveMedia/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
 install UsageEnvironment/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
