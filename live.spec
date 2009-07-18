@@ -2,7 +2,7 @@ Summary:	LIVE555 for streaming media
 Summary(pl.UTF-8):	LIVE555 do strumieni multimedialnych
 Name:		live
 Version:	2009.07.09
-Release:	4
+Release:	5
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
@@ -73,7 +73,7 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
-	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcflags} -DSOCKLEN_T=socklen_t -fPIC"
+	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t -fPIC"
 
 cd ../%{name}-shared
 ./genMakefiles linux-shared
@@ -82,7 +82,7 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
 	LIB_SUFFIX="so.%{LIVE_ABI_VERSION}" \
-	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcflags} -DSOCKLEN_T=socklen_t"
+	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -119,15 +119,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so*
-%attr(755,root,root) %{_libdir}/libUsageEnvironment.so*
-%attr(755,root,root) %{_libdir}/libgroupsock.so*
-%attr(755,root,root) %{_libdir}/libliveMedia.so*
+%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.*
+%attr(755,root,root) %{_libdir}/libUsageEnvironment.so.*
+%attr(755,root,root) %{_libdir}/libgroupsock.so.*
+%attr(755,root,root) %{_libdir}/libliveMedia.so.*
 
 %files devel
 %defattr(644,root,root,755)
 %doc ChangeLog.txt
 %{_includedir}/liveMedia
+%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so
+%attr(755,root,root) %{_libdir}/libUsageEnvironment.so
+%attr(755,root,root) %{_libdir}/libgroupsock.so
+%attr(755,root,root) %{_libdir}/libliveMedia.so
 
 %files static
 %defattr(644,root,root,755)
