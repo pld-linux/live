@@ -2,7 +2,7 @@ Summary:	LIVE555 libraries for streaming media
 Summary(pl.UTF-8):	Biblioteki LIVE555 do strumieni multimedialnych
 Name:		live
 Version:	2009.07.09
-Release:	2.5
+Release:	2.6
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
@@ -28,7 +28,7 @@ Biblioteki LIVE555 do strumieni multimedialnych.
 Summary:        Header files for developing programs using LIVE555
 Summary(pl.UTF-8):      Pliki nagłówkowe do biblioteki LIVE555
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description devel
 Header files for developing programs using LIVE555.
@@ -40,7 +40,7 @@ Pliki nagłówkowe do biblioteki LIVE555
 Summary:        Static version LIVE555 library
 Summary(pl.UTF-8):      Biblioteka statyczna LIVE555
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description static
 Static LIVE555 library.
