@@ -129,15 +129,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.so.*
-%attr(755,root,root) %{_livedir}/UsageEnvironment/libUsageEnvironment.so.*
-%attr(755,root,root) %{_livedir}/groupsock/libgroupsock.so.*
-%attr(755,root,root) %{_livedir}/liveMedia/libliveMedia.so.*
-# Temporary:
-%attr(755,root,root) %{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.so
-%attr(755,root,root) %{_livedir}/UsageEnvironment/libUsageEnvironment.so
-%attr(755,root,root) %{_livedir}/groupsock/libgroupsock.so
-%attr(755,root,root) %{_livedir}/liveMedia/libliveMedia.so
+%attr(755,root,root) %{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.so*
+%attr(755,root,root) %{_livedir}/UsageEnvironment/libUsageEnvironment.so*
+%attr(755,root,root) %{_livedir}/groupsock/libgroupsock.so*
+%attr(755,root,root) %{_livedir}/liveMedia/libliveMedia.so*
 
 %files devel
 %defattr(644,root,root,755)
