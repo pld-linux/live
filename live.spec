@@ -2,7 +2,7 @@ Summary:	LIVE555 libraries for streaming media
 Summary(pl.UTF-8):	Biblioteki LIVE555 do strumieni multimedialnych
 Name:		live
 Version:	2009.07.09
-Release:	2.6
+Release:	3
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
@@ -16,13 +16,25 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		specflags	-fno-strict-aliasing
+%define		_livedir		%{_libdir}/liveMedia
+%define		specflags		-fno-strict-aliasing
+# Should be changed on every ABI change
+# Alexis Ballier <aballier@gentoo.org>:
+%define		LIVE_ABI_VERSION	1
 
 %description
 LIVE555 libraries for streaming media.
 
 %description -l pl.UTF-8
 Biblioteki LIVE555 do strumieni multimedialnych.
+
+%package libs
+Summary:        Shared LIVE555 libraries
+Group:          Development/Libraries
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description libs
+Shared LIVE555 libraries
 
 %package devel
 Summary:        Header files for developing programs using LIVE555
@@ -40,7 +52,7 @@ Pliki nagłówkowe do biblioteki LIVE555
 Summary:        Static version LIVE555 library
 Summary(pl.UTF-8):      Biblioteka statyczna LIVE555
 Group:          Development/Libraries
-Requires:       %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
 Static LIVE555 library.
@@ -69,18 +81,19 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
+	LIB_SUFFIX="so.%{LIVE_ABI_VERSION}" \
 	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcflags} -DSOCKLEN_T=socklen_t"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/liveMedia/{liveMedia,groupsock,UsageEnvironment,BasicUsageEnvironment} \
+install -d $RPM_BUILD_ROOT%{_livedir}/{liveMedia,groupsock,UsageEnvironment,BasicUsageEnvironment} \
 	$RPM_BUILD_ROOT%{_includedir}/liveMedia
 
 cd %{name}-static
-install liveMedia/libliveMedia.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/liveMedia
-install groupsock/libgroupsock.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/groupsock
-install UsageEnvironment/libUsageEnvironment.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/UsageEnvironment
-install BasicUsageEnvironment/libBasicUsageEnvironment.a $RPM_BUILD_ROOT%{_libdir}/liveMedia/BasicUsageEnvironment
+install liveMedia/libliveMedia.a $RPM_BUILD_ROOT%{_livedir}/liveMedia
+install groupsock/libgroupsock.a $RPM_BUILD_ROOT%{_livedir}/groupsock
+install UsageEnvironment/libUsageEnvironment.a $RPM_BUILD_ROOT%{_livedir}/UsageEnvironment
+install BasicUsageEnvironment/libBasicUsageEnvironment.a $RPM_BUILD_ROOT%{_livedir}/BasicUsageEnvironment
 
 install liveMedia/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
 install UsageEnvironment/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
@@ -88,10 +101,14 @@ install BasicUsageEnvironment/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
 install groupsock/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
 
 cd ../%{name}-shared
-install liveMedia/libliveMedia.so $RPM_BUILD_ROOT%{_libdir}/liveMedia/liveMedia
-install groupsock/libgroupsock.so $RPM_BUILD_ROOT%{_libdir}/liveMedia/groupsock
-install UsageEnvironment/libUsageEnvironment.so $RPM_BUILD_ROOT%{_libdir}/liveMedia/UsageEnvironment
-install BasicUsageEnvironment/libBasicUsageEnvironment.so $RPM_BUILD_ROOT%{_libdir}/liveMedia/BasicUsageEnvironment
+install liveMedia/libliveMedia.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/liveMedia
+ln -s libliveMedia.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/liveMedia/libliveMedia.so
+install groupsock/libgroupsock.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/groupsock
+ln -s libgroupsock.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/groupsock/libgroupsock.so
+install UsageEnvironment/libUsageEnvironment.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/UsageEnvironment
+ln -s libUsageEnvironment.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/UsageEnvironment/libUsageEnvironment.so
+install BasicUsageEnvironment/libBasicUsageEnvironment.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/BasicUsageEnvironment
+ln -s libBasicUsageEnvironment.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.so
 
 cd ..
 install %{SOURCE1} ChangeLog.txt
@@ -99,20 +116,28 @@ install %{SOURCE1} ChangeLog.txt
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post libs   -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%dir %{_libdir}/liveMedia
-%dir %{_libdir}/liveMedia/UsageEnvironment
-%attr(755,root,root) %{_libdir}/liveMedia/UsageEnvironment/libUsageEnvironment.so
-%dir %{_libdir}/liveMedia/BasicUsageEnvironment
-%attr(755,root,root) %{_libdir}/liveMedia/BasicUsageEnvironment/libBasicUsageEnvironment.so
-%dir %{_libdir}/liveMedia/liveMedia
-%attr(755,root,root) %{_libdir}/liveMedia/liveMedia/libliveMedia.so
-%dir %{_libdir}/liveMedia/groupsock
-%attr(755,root,root) %{_libdir}/liveMedia/groupsock/libgroupsock.so
+%dir %{_livedir}
+%dir %{_livedir}/BasicUsageEnvironment
+%dir %{_livedir}/UsageEnvironment
+%dir %{_livedir}/groupsock
+%dir %{_livedir}/liveMedia
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.so.*
+%attr(755,root,root) %{_livedir}/UsageEnvironment/libUsageEnvironment.so.*
+%attr(755,root,root) %{_livedir}/groupsock/libgroupsock.so.*
+%attr(755,root,root) %{_livedir}/liveMedia/libliveMedia.so.*
+# Temporary:
+%attr(755,root,root) %{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.so
+%attr(755,root,root) %{_livedir}/UsageEnvironment/libUsageEnvironment.so
+%attr(755,root,root) %{_livedir}/groupsock/libgroupsock.so
+%attr(755,root,root) %{_livedir}/liveMedia/libliveMedia.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -121,7 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/liveMedia/BasicUsageEnvironment/libBasicUsageEnvironment.a
-%{_libdir}/liveMedia/UsageEnvironment/libUsageEnvironment.a
-%{_libdir}/liveMedia/groupsock/libgroupsock.a
-%{_libdir}/liveMedia/liveMedia/libliveMedia.a
+%{_livedir}/BasicUsageEnvironment/libBasicUsageEnvironment.a
+%{_livedir}/UsageEnvironment/libUsageEnvironment.a
+%{_livedir}/groupsock/libgroupsock.a
+%{_livedir}/liveMedia/libliveMedia.a
