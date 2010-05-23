@@ -1,13 +1,13 @@
 Summary:	LIVE555 for streaming media
 Summary(pl.UTF-8):	LIVE555 do strumieni multimedialnych
 Name:		live
-Version:	2009.07.09
-Release:	5
+Version:	2010.04.09
+Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	8085b7f75e55c91f15e96f375c80b9fb
+# Source0-md5:	7f56f54c1c4697764c6e88282e353e81
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
 # Source1-md5:	9f962afca5e55ae76b84ad8cb365d805
 Source2:	%{name}-shared.config
