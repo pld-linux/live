@@ -30,17 +30,18 @@ LIVE555 for streaming media.
 LIVE555 do strumieni multimedialnych.
 
 %package libs
-Summary:        Shared LIVE555 libraries for streaming media
-Group:          Development/Libraries
+Summary:	Shared LIVE555 libraries for streaming media
+Group:		Development/Libraries
 
 %description libs
 Shared LIVE555 libraries for streaming media.
 
 %package devel
-Summary:        Header files for developing programs using LIVE555
-Summary(pl.UTF-8):      Pliki nagłówkowe do biblioteki LIVE555
-Group:          Development/Libraries
-Requires:       %{name}-libs = %{epoch}:%{version}-%{release}
+Summary:	Header files for developing programs using LIVE555
+Summary(pl.UTF-8):	Pliki nagłówkowe do biblioteki LIVE555
+Group:		Development/Libraries
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Obsoletes:	live < 2:2009.07.09-2.5
 
 %description devel
 Header files for developing programs using LIVE555.
@@ -49,10 +50,10 @@ Header files for developing programs using LIVE555.
 Pliki nagłówkowe do biblioteki LIVE555
 
 %package static
-Summary:        Static version LIVE555 library
-Summary(pl.UTF-8):      Biblioteka statyczna LIVE555
-Group:          Development/Libraries
-Requires:       %{name}-devel = %{epoch}:%{version}-%{release}
+Summary:	Static version LIVE555 library
+Summary(pl.UTF-8):	Biblioteka statyczna LIVE555
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
 Static LIVE555 library.
@@ -60,7 +61,7 @@ Static LIVE555 library.
 %description static -l pl.UTF-8
 Statyczna biblioteka LIVE555.
 
-%prep 
+%prep
 %setup -q -c -n %{name}
 install %{SOURCE2} %{name}/config.linux-shared
 cp -pPR %{name} %{name}-shared
@@ -90,22 +91,22 @@ install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/liveMedia,%{_bindir}}
 
 cd %{name}-static
 for i in liveMedia groupsock UsageEnvironment BasicUsageEnvironment; do
-	install $i/lib$i.a $RPM_BUILD_ROOT%{_libdir}
+	install -p $i/lib$i.a $RPM_BUILD_ROOT%{_libdir}
 done
 
 cd ../%{name}-shared
 
 for i in liveMedia groupsock UsageEnvironment BasicUsageEnvironment; do
-	install $i/lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}
+	install -p $i/lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}
 	ln -s lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}/lib$i.so
-	install $i/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
+	install -p $i/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
 done
 
 # We provide shared version:
-install mediaServer/live555MediaServer $RPM_BUILD_ROOT%{_bindir}
+install -p mediaServer/live555MediaServer $RPM_BUILD_ROOT%{_bindir}
 
 cd ..
-install %{SOURCE1} ChangeLog.txt
+cp -af %{SOURCE1} ChangeLog.txt
 
 %clean
 rm -rf $RPM_BUILD_ROOT
