@@ -1,16 +1,17 @@
-Summary:	LIVE555 for streaming media
-Summary(pl.UTF-8):	LIVE555 do strumieni multimedialnych
+Summary:	LIVE555 streaming media server
+Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2010.04.09
-Release:	2
+Version:	2011.03.14
+Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	7f56f54c1c4697764c6e88282e353e81
+# Source0-md5:	ff65b2c598e970b4b6c8219a1811de00
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	9f962afca5e55ae76b84ad8cb365d805
+# Source1-md5:	2a04b97d2dddb97ca9ab05e4777c13a0
 Source2:	%{name}-shared.config
+Patch0:		%{name}-link.patch
 URL:		http://www.live555.com/liveMedia/
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
@@ -24,23 +25,28 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		LIVE_ABI_VERSION	1
 
 %description
-LIVE555 for streaming media.
+LIVE555 streaming media server.
 
 %description -l pl.UTF-8
-LIVE555 do strumieni multimedialnych.
+LIVE555 - serwer strumieni multimedialnych.
 
 %package libs
 Summary:	Shared LIVE555 libraries for streaming media
-Group:		Development/Libraries
+Summary(pl.UTF-8):	Biblioteki współdzielone LIVE555 do strumieni multimedialnych
+Group:		Libraries
 
 %description libs
 Shared LIVE555 libraries for streaming media.
+
+%description libs -l pl.UTF-8
+Biblioteki współdzielone LIVE555 do strumieni multimedialnych.
 
 %package devel
 Summary:	Header files for developing programs using LIVE555
 Summary(pl.UTF-8):	Pliki nagłówkowe do biblioteki LIVE555
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	libstdc++-devel
 Obsoletes:	live < 2:2009.07.09-2.5
 
 %description devel
@@ -50,22 +56,24 @@ Header files for developing programs using LIVE555.
 Pliki nagłówkowe do biblioteki LIVE555
 
 %package static
-Summary:	Static version LIVE555 library
-Summary(pl.UTF-8):	Biblioteka statyczna LIVE555
+Summary:	Static LIVE555 libraries for streaming media
+Summary(pl.UTF-8):	Biblioteki statyczne LIVE555 do strumieni multimedialnych
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
-Static LIVE555 library.
+Static LIVE555 libraries for streaming media.
 
 %description static -l pl.UTF-8
-Statyczna biblioteka LIVE555.
+Biblioteki statyczne LIVE555 do strumieni multimedialnych.
 
 %prep
 %setup -q -c -n %{name}
+%patch0 -p0
 install %{SOURCE2} %{name}/config.linux-shared
 cp -pPR %{name} %{name}-shared
 mv %{name} %{name}-static
+cp -af %{SOURCE1} ChangeLog.txt
 
 %build
 cd %{name}-static
@@ -80,8 +88,8 @@ cd ../%{name}-shared
 ./genMakefiles linux-shared
 sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
-	C_COMPILER="%{__cc}" \
-	CPLUSPLUS_COMPILER="%{__cxx}" \
+	CC="%{__cc}" \
+	CXX="%{__cxx}" \
 	LIB_SUFFIX="so.%{LIVE_ABI_VERSION}" \
 	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t"
 
@@ -89,30 +97,21 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/liveMedia,%{_bindir}}
 
-cd %{name}-static
 for i in liveMedia groupsock UsageEnvironment BasicUsageEnvironment; do
-	install -p $i/lib$i.a $RPM_BUILD_ROOT%{_libdir}
-done
-
-cd ../%{name}-shared
-
-for i in liveMedia groupsock UsageEnvironment BasicUsageEnvironment; do
-	install -p $i/lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}
+	install -p %{name}-static/$i/lib$i.a $RPM_BUILD_ROOT%{_libdir}
+	install -p %{name}-shared/$i/lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}
 	ln -s lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}/lib$i.so
-	install -p $i/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
+	install -p %{name}-shared/$i/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
 done
 
 # We provide shared version:
-install -p mediaServer/live555MediaServer $RPM_BUILD_ROOT%{_bindir}
-
-cd ..
-cp -af %{SOURCE1} ChangeLog.txt
+install -p %{name}-shared/mediaServer/live555MediaServer $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post libs   -p /sbin/ldconfig
-%postun libs -p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -128,11 +127,11 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %doc ChangeLog.txt
-%{_includedir}/liveMedia
 %attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so
 %attr(755,root,root) %{_libdir}/libUsageEnvironment.so
 %attr(755,root,root) %{_libdir}/libgroupsock.so
 %attr(755,root,root) %{_libdir}/libliveMedia.so
+%{_includedir}/liveMedia
 
 %files static
 %defattr(644,root,root,755)

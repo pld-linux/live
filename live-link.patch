@@ -1,0 +1,62 @@
+--- live/BasicUsageEnvironment/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
++++ live/BasicUsageEnvironment/Makefile.tail	2011-03-16 18:09:05.547417970 +0100
+@@ -8,9 +8,11 @@
+ 	BasicTaskScheduler0.$(OBJ) BasicTaskScheduler.$(OBJ) \
+ 	DelayQueue.$(OBJ) BasicHashTable.$(OBJ)
+ 
++LIBRARY_DEPS = ../UsageEnvironment/libUsageEnvironment.$(LIB_SUFFIX)
++
+ libBasicUsageEnvironment.$(LIB_SUFFIX): $(OBJS)
+ 	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) \
+-		$(OBJS)
++		$(OBJS) $(LIBRARY_LINK_DEPS)
+ 
+ .$(C).$(OBJ):
+ 	$(C_COMPILER) -c $(C_FLAGS) $<       
+--- live/groupsock/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
++++ live/groupsock/Makefile.tail	2011-03-16 18:11:05.827411266 +0100
+@@ -25,10 +25,12 @@
+ NetAddress.$(CPP):	include/NetAddress.hh include/GroupsockHelper.hh
+ IOHandlers.$(CPP):	include/IOHandlers.hh include/TunnelEncaps.hh
+ 
++LIBRARY_DEPS = ../BasicUsageEnvironment/libBasicUsageEnvironment.$(LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(LIB_SUFFIX)
++
+ libgroupsock.$(LIB_SUFFIX): $(GROUPSOCK_LIB_OBJS) \
+     $(PLATFORM_SPECIFIC_LIB_OBJS)
+ 	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) \
+-		$(GROUPSOCK_LIB_OBJS)
++		$(GROUPSOCK_LIB_OBJS) $(LIBRARY_LINK_DEPS)
+ 
+ clean:
+ 	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
+--- live/liveMedia/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
++++ live/liveMedia/Makefile.tail	2011-03-16 18:34:20.507409590 +0100
+@@ -45,10 +45,12 @@
+ 
+ LIVEMEDIA_LIB_OBJS = Media.$(OBJ) $(MISC_SOURCE_OBJS) $(MISC_SINK_OBJS) $(MISC_FILTER_OBJS) $(RTP_OBJS) $(RTCP_OBJS) $(RTSP_OBJS) $(SIP_OBJS) $(SESSION_OBJS) $(QUICKTIME_OBJS) $(AVI_OBJS) $(TRANSPORT_STREAM_TRICK_PLAY_OBJS) $(MISC_OBJS)
+ 
++LIBRARY_DEPS = ../groupsock/libgroupsock.$(LIB_SUFFIX) ../BasicUsageEnvironment/libBasicUsageEnvironment.$(LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(LIB_SUFFIX)
++
+ $(LIVEMEDIA_LIB): $(LIVEMEDIA_LIB_OBJS) \
+     $(PLATFORM_SPECIFIC_LIB_OBJS)
+ 	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) \
+-		$(LIVEMEDIA_LIB_OBJS)
++		$(LIVEMEDIA_LIB_OBJS) $(LIBRARY_LINK_DEPS)
+ 
+ Media.$(CPP):		include/Media.hh
+ include/Media.hh:	include/liveMedia_version.hh
+--- live/Makefile.tail.orig	2011-03-16 19:18:57.767415456 +0100
++++ live/Makefile.tail	2011-03-16 19:30:31.367419646 +0100
+@@ -10,10 +10,10 @@
+ MEDIA_SERVER_DIR = mediaServer
+ 
+ all:
+-	cd $(LIVEMEDIA_DIR) ; $(MAKE)
+-	cd $(GROUPSOCK_DIR) ; $(MAKE)
+ 	cd $(USAGE_ENVIRONMENT_DIR) ; $(MAKE)
+ 	cd $(BASIC_USAGE_ENVIRONMENT_DIR) ; $(MAKE)
++	cd $(GROUPSOCK_DIR) ; $(MAKE)
++	cd $(LIVEMEDIA_DIR) ; $(MAKE)
+ 	cd $(TESTPROGS_DIR) ; $(MAKE)
+ 	cd $(MEDIA_SERVER_DIR) ; $(MAKE)
+ 
