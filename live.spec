@@ -1,15 +1,15 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2012.01.13
+Version:	2012.01.26
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	114c2cfd21625da79d582d35b7fb1179
+# Source0-md5:	db7f0658583b590fb3d4044935f48b8e
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	39b0ca5c37547a0c14ddb0b4c50c57ba
+# Source1-md5:	f1f4d707563b7adb0e3fa8d96dfd8c98
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
 URL:		http://www.live555.com/liveMedia/
