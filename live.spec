@@ -1,15 +1,17 @@
+# TODO:
+# - mediaServer should have init-scripts, user, etc, etc...
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2012.02.29
+Version:	2012.10.24
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	ee00b4f9ca4efaa1aeaf47b5c185fe93
+# Source0-md5:	4cda836ab242a31eb1b117b1b05cc572
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	d32259edc4937d3bc8498b6d7468ffd4
+# Source1-md5:	dcf1293d5e01185aee180cbc3f18d6a1
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
 URL:		http://www.live555.com/liveMedia/

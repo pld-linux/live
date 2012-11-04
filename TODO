@@ -1,3 +1,0 @@
-# TODO:
-- mediaServer should have init-scripts, user, etc, etc...
-- vlc looks for *.so, that's why it's not in devel
