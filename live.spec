@@ -3,15 +3,15 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2012.10.24
+Version:	2012.11.08
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	4cda836ab242a31eb1b117b1b05cc572
+# Source0-md5:	d4a873052b13e77e80a8d267176da661
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	dcf1293d5e01185aee180cbc3f18d6a1
+# Source1-md5:	90124872e5ae8680ae8bb8c81eccdb37
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
 URL:		http://www.live555.com/liveMedia/
@@ -92,8 +92,8 @@ cd ../%{name}-shared
 ./genMakefiles linux-shared
 sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
-	CC="%{__cc}" \
-	CXX="%{__cxx}" \
+	C_COMPILER="%{__cc}" \
+	CPLUSPLUS_COMPILER="%{__cxx}" \
 	LIB_SUFFIX="so.%{LIVE_ABI_VERSION}" \
 	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t"
 
