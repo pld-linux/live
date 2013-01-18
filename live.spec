@@ -11,7 +11,7 @@ Group:		Development/Libraries
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
 # Source0-md5:	acdf517eea51ec16541750fca0f0e567
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	7fe68ace168517d914ab0d20148a8dbc
+# Source1-md5:	3c4e50f84f7fd289cbdaa8a2cac4e03a
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
 URL:		http://www.live555.com/liveMedia/
