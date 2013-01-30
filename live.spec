@@ -4,7 +4,7 @@ Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
 Version:	2013.01.25
-Release:	1
+Release:	2
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Development/Libraries
@@ -86,7 +86,7 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
-	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t -fPIC"
+	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1 -fPIC"
 
 cd ../%{name}-shared
 ./genMakefiles linux-shared
@@ -95,7 +95,7 @@ sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
 	LIB_SUFFIX="so.%{LIVE_ABI_VERSION}" \
-	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t"
+	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1"
 
 %install
 rm -rf $RPM_BUILD_ROOT
