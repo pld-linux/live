@@ -14,6 +14,8 @@ Source1:	http://www.live555.com/liveMedia/public/changelog.txt
 # Source1-md5:	bed918232b9caf3cf2b04bf32a33c285
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
+# from debian
+Patch1:		%{name}-pkgconfig.patch
 URL:		http://www.live555.com/liveMedia/
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
@@ -74,6 +76,9 @@ Biblioteki statyczne LIVE555 do strumieni multimedialnych.
 %prep
 %setup -q -c -n %{name}
 %patch0 -p0
+cd live
+%patch1 -p1
+cd ..
 install %{SOURCE2} %{name}/config.linux-shared
 cp -pPR %{name} %{name}-shared
 mv %{name} %{name}-static
@@ -111,6 +116,11 @@ done
 # We provide shared version:
 install -p %{name}-shared/mediaServer/live555MediaServer $RPM_BUILD_ROOT%{_bindir}
 
+# pc file
+%{__make} -C live-shared install_shared_libraries \
+	LIBDIR=%{_libdir} \
+	DESTDIR=$RPM_BUILD_ROOT
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -136,6 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libgroupsock.so
 %attr(755,root,root) %{_libdir}/libliveMedia.so
 %{_includedir}/liveMedia
+%{_pkgconfigdir}/live555.pc
 
 %files static
 %defattr(644,root,root,755)
