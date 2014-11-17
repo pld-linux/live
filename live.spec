@@ -1,17 +1,18 @@
 # TODO:
 # - mediaServer should have init-scripts, user, etc, etc...
+# - package test apps
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2014.11.01
+Version:	2014.11.12
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	61ec3927fdff01fdaa831238a857b660
+# Source0-md5:	2e401cc9aa22d28795e48cc4ff1a4c89
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	d0f21f6f90aa2ff3c00ada07066bc278
+# Source1-md5:	74a80b58144dacd6d2e560c13484d0d7
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
 # from debian
