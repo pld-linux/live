@@ -4,15 +4,15 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2015.03.16
+Version:	2016.02.22
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	949f596d95cbb25bff924a16726ce821
+# Source0-md5:	0ffd0ebf95779da2def3672327b97841
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	5754a61ec241a2b75805dbe8b15db88a
+# Source1-md5:	002cc1892969cdb7a3db96b585cf412b
 Source2:	%{name}-shared.config
 Patch0:		%{name}-link.patch
 # from debian
@@ -27,7 +27,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		specflags		-fno-strict-aliasing
 # Should be changed on every ABI change
 # Alexis Ballier <aballier@gentoo.org>:
-%define		LIVE_ABI_VERSION	1
+%define		LIVE_ABI_VERSION	7
 # circular symbol dependencies with libBasicUsageEnvironment
 %define		skip_post_check_so	.*%{_libdir}/libUsageEnvironment\.so.*
 
@@ -134,10 +134,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.*
-%attr(755,root,root) %{_libdir}/libUsageEnvironment.so.*
-%attr(755,root,root) %{_libdir}/libgroupsock.so.*
-%attr(755,root,root) %{_libdir}/libliveMedia.so.*
+%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.7
+%attr(755,root,root) %{_libdir}/libUsageEnvironment.so.7
+%attr(755,root,root) %{_libdir}/libgroupsock.so.7
+%attr(755,root,root) %{_libdir}/libliveMedia.so.7
 
 %files devel
 %defattr(644,root,root,755)
