@@ -4,7 +4,7 @@
  	BasicTaskScheduler0.$(OBJ) BasicTaskScheduler.$(OBJ) \
  	DelayQueue.$(OBJ) BasicHashTable.$(OBJ)
  
-+LIBRARY_DEPS = ../UsageEnvironment/libUsageEnvironment.$(LIB_SUFFIX)
++LIBRARY_DEPS = ../UsageEnvironment/libUsageEnvironment.$(libUsageEnvironment_LIB_SUFFIX)
 +
  libBasicUsageEnvironment.$(LIB_SUFFIX): $(OBJS)
  	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) \
@@ -19,7 +19,7 @@
  NetAddress.$(CPP):	include/NetAddress.hh include/GroupsockHelper.hh
  IOHandlers.$(CPP):	include/IOHandlers.hh include/TunnelEncaps.hh
  
-+LIBRARY_DEPS = ../BasicUsageEnvironment/libBasicUsageEnvironment.$(LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(LIB_SUFFIX)
++LIBRARY_DEPS = ../BasicUsageEnvironment/libBasicUsageEnvironment.$(libBasicUsageEnvironment_LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(libUsageEnvironment_LIB_SUFFIX)
 +
  libgroupsock.$(LIB_SUFFIX): $(GROUPSOCK_LIB_OBJS) \
      $(PLATFORM_SPECIFIC_LIB_OBJS)
@@ -35,7 +35,7 @@
  
  LIVEMEDIA_LIB_OBJS = Media.$(OBJ) $(MISC_SOURCE_OBJS) $(MISC_SINK_OBJS) $(MISC_FILTER_OBJS) $(RTP_OBJS) $(RTCP_OBJS) $(RTSP_OBJS) $(SIP_OBJS) $(SESSION_OBJS) $(QUICKTIME_OBJS) $(AVI_OBJS) $(TRANSPORT_STREAM_TRICK_PLAY_OBJS) $(MISC_OBJS)
  
-+LIBRARY_DEPS = ../groupsock/libgroupsock.$(LIB_SUFFIX) ../BasicUsageEnvironment/libBasicUsageEnvironment.$(LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(LIB_SUFFIX)
++LIBRARY_DEPS = ../groupsock/libgroupsock.$(libgroupsock_LIB_SUFFIX) ../BasicUsageEnvironment/libBasicUsageEnvironment.$(libBasicUsageEnvironment_LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(libUsageEnvironment_LIB_SUFFIX)
 +
  $(LIVEMEDIA_LIB): $(LIVEMEDIA_LIB_OBJS) \
      $(PLATFORM_SPECIFIC_LIB_OBJS)
@@ -60,3 +60,13 @@
  	cd $(TESTPROGS_DIR) ; $(MAKE)
  	cd $(MEDIA_SERVER_DIR) ; $(MAKE)
  
+--- live/config.linux-with-shared-libraries.orig	2017-04-26 09:37:47.000000000 +0200
++++ live/config.linux-with-shared-libraries	2017-05-16 16:00:01.649253530 +0200
+@@ -39,6 +39,7 @@
+ SHORT_LIB_SUFFIX =	so.$(shell expr $($(NAME)_VERSION_CURRENT) - $($(NAME)_VERSION_AGE))
+ LIB_SUFFIX =	 	$(SHORT_LIB_SUFFIX).$($(NAME)_VERSION_AGE).$($(NAME)_VERSION_REVISION)
+ LIBRARY_LINK_OPTS =	-shared -Wl,-soname,$(NAME).$(SHORT_LIB_SUFFIX) $(LDFLAGS)
++LIBRARY_LINK_DEPS =	$(LIBRARY_DEPS)
+ LIBS_FOR_CONSOLE_APPLICATION =
+ LIBS_FOR_GUI_APPLICATION =
+ EXE =

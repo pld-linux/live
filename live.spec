@@ -1,19 +1,22 @@
 # TODO:
 # - mediaServer should have init-scripts, user, etc, etc...
-# - package test apps
+# - package test apps (?)
+#
+# Conditional build:
+%bcond_without	static_libs	# static libraries
+
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2016.02.22
+Version:	2017.04.26
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	0ffd0ebf95779da2def3672327b97841
+# Source0-md5:	7155e2d7313ef92929a8268856f0551c
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	002cc1892969cdb7a3db96b585cf412b
-Source2:	%{name}-shared.config
+# Source1-md5:	0fbfe0549fec05f3f4cfa654203f32e8
 Patch0:		%{name}-link.patch
 # from debian
 Patch1:		%{name}-pkgconfig.patch
@@ -23,11 +26,7 @@ BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_livedir		%{_libdir}/liveMedia
 %define		specflags		-fno-strict-aliasing
-# Should be changed on every ABI change
-# Alexis Ballier <aballier@gentoo.org>:
-%define		LIVE_ABI_VERSION	7
 # circular symbol dependencies with libBasicUsageEnvironment
 %define		skip_post_check_so	.*%{_libdir}/libUsageEnvironment\.so.*
 
@@ -75,53 +74,62 @@ Static LIVE555 libraries for streaming media.
 Biblioteki statyczne LIVE555 do strumieni multimedialnych.
 
 %prep
-%setup -q -c -n %{name}
+%setup -q -c
 %patch0 -p0
 cd live
 %patch1 -p1
 cd ..
-install %{SOURCE2} %{name}/config.linux-shared
-cp -pPR %{name} %{name}-shared
-mv %{name} %{name}-static
+
+# disable building test programs
+%{__sed} -i -e '/cd \$(TESTPROGS_DIR)/d' live/Makefile.tail
+
+# out-of-source builds not supported, so clone sources for shared and static build
+%if %{with static_libs}
+cp -pPR live live-static
+%endif
+%{__mv} live live-shared
+
 cp -af %{SOURCE1} ChangeLog.txt
 
 %build
-cd %{name}-static
+%if %{with static_libs}
+cd live-static
 ./genMakefiles linux
-sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
-	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1 -fPIC"
+	CPPFLAGS="%{rpmcppflags}" \
+	CFLAGS="%{rpmcflags} -fPIC" \
+	CXXFLAGS="%{rpmcxxflags} -fPIC"
+cd ..
+%endif
 
-cd ../%{name}-shared
-./genMakefiles linux-shared
-sed -i -e 's#$(TESTPROGS_APP)##g' Makefile Makefile.tail
+cd live-shared
+./genMakefiles linux-with-shared-libraries
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
-	LIB_SUFFIX="so.%{LIVE_ABI_VERSION}" \
-	COMPILE_OPTS="\$(INCLUDES) -I. %{rpmcppflags} %{rpmcflags} -DSOCKLEN_T=socklen_t -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1"
+	CPPFLAGS="%{rpmcppflags}" \
+	CFLAGS="%{rpmcflags}" \
+	CXXFLAGS="%{rpmcxxflags}" \
+	LIBRARY_LINK="%{__cxx} -o"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/liveMedia,%{_bindir}}
 
-for i in liveMedia groupsock UsageEnvironment BasicUsageEnvironment; do
-	install -p %{name}-static/$i/lib$i.a $RPM_BUILD_ROOT%{_libdir}
-	install -p %{name}-shared/$i/lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}
-	ln -s lib$i.so.%{LIVE_ABI_VERSION} $RPM_BUILD_ROOT%{_libdir}/lib$i.so
-	install -p %{name}-shared/$i/include/* $RPM_BUILD_ROOT%{_includedir}/liveMedia
-done
-
-# We provide shared version:
-install -p %{name}-shared/mediaServer/live555MediaServer $RPM_BUILD_ROOT%{_bindir}
-
-# pc file
-%{__make} -C live-shared install_shared_libraries \
+%if %{with static_libs}
+# static first so that binaries will be overwritten by shared version
+%{__make} -C live-static install \
+	PREFIX=%{_prefix} \
 	LIBDIR=%{_libdir} \
 	DESTDIR=$RPM_BUILD_ROOT
-
+%endif
+	
+%{__make} -C live-shared install \
+	PREFIX=%{_prefix} \
+	LIBDIR=%{_libdir} \
+	DESTDIR=$RPM_BUILD_ROOT
+	
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -131,13 +139,18 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/live555MediaServer
+%attr(755,root,root) %{_bindir}/live555ProxyServer
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.7
-%attr(755,root,root) %{_libdir}/libUsageEnvironment.so.7
-%attr(755,root,root) %{_libdir}/libgroupsock.so.7
-%attr(755,root,root) %{_libdir}/libliveMedia.so.7
+%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libBasicUsageEnvironment.so.1
+%attr(755,root,root) %{_libdir}/libUsageEnvironment.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libUsageEnvironment.so.3
+%attr(755,root,root) %{_libdir}/libgroupsock.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libgroupsock.so.8
+%attr(755,root,root) %{_libdir}/libliveMedia.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.58
 
 %files devel
 %defattr(644,root,root,755)
@@ -146,12 +159,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libUsageEnvironment.so
 %attr(755,root,root) %{_libdir}/libgroupsock.so
 %attr(755,root,root) %{_libdir}/libliveMedia.so
+%{_includedir}/BasicUsageEnvironment
+%{_includedir}/UsageEnvironment
+%{_includedir}/groupsock
 %{_includedir}/liveMedia
 %{_pkgconfigdir}/live555.pc
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libBasicUsageEnvironment.a
 %{_libdir}/libUsageEnvironment.a
 %{_libdir}/libgroupsock.a
 %{_libdir}/libliveMedia.a
+%endif
