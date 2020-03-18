@@ -8,20 +8,21 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2019.11.05
+Version:	2020.03.06
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	130f62ce9de7316cb60092d079989103
+# Source0-md5:	cfca528bda964d2167260b3ab6ee294e
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	d4e99b1676759f9620cc32776e8fa9d0
+# Source1-md5:	668e4613c6e2d64aa991dec5c07d7783
 Patch0:		%{name}-link.patch
 # from debian
 Patch1:		%{name}-pkgconfig.patch
 URL:		http://www.live555.com/liveMedia/
 BuildRequires:	libstdc++-devel
+BuildRequires:	openssl-devel
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -138,6 +139,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/live555HLSProxy
 %attr(755,root,root) %{_bindir}/live555MediaServer
 %attr(755,root,root) %{_bindir}/live555ProxyServer
 
@@ -150,7 +152,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libgroupsock.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgroupsock.so.8
 %attr(755,root,root) %{_libdir}/libliveMedia.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.73
+%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.78
 
 %files devel
 %defattr(644,root,root,755)
