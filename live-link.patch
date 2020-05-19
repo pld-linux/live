@@ -29,19 +29,19 @@
  
  clean:
  	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
---- live/liveMedia/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
-+++ live/liveMedia/Makefile.tail	2011-03-16 18:34:20.507409590 +0100
-@@ -45,10 +45,12 @@
+--- live/liveMedia/Makefile.tail.orig	2020-05-19 19:11:05.573270651 +0200
++++ live/liveMedia/Makefile.tail	2020-05-19 19:58:52.524405711 +0200
+@@ -65,10 +65,12 @@
  
- LIVEMEDIA_LIB_OBJS = Media.$(OBJ) $(MISC_SOURCE_OBJS) $(MISC_SINK_OBJS) $(MISC_FILTER_OBJS) $(RTP_OBJS) $(RTCP_OBJS) $(RTSP_OBJS) $(SIP_OBJS) $(SESSION_OBJS) $(QUICKTIME_OBJS) $(AVI_OBJS) $(TRANSPORT_STREAM_TRICK_PLAY_OBJS) $(MISC_OBJS)
+ LIVEMEDIA_LIB_OBJS = Media.$(OBJ) $(MISC_SOURCE_OBJS) $(MISC_SINK_OBJS) $(MISC_FILTER_OBJS) $(RTP_OBJS) $(RTCP_OBJS) $(GENERIC_MEDIA_SERVER_OBJS) $(RTSP_OBJS) $(SIP_OBJS) $(SESSION_OBJS) $(QUICKTIME_OBJS) $(AVI_OBJS) $(TRANSPORT_STREAM_TRICK_PLAY_OBJS) $(MATROSKA_OBJS) $(OGG_OBJS) $(TRANSPORT_STREAM_DEMUX_OBJS) $(HLS_OBJS) $(SECURITY_OBJS) $(MISC_OBJS)
  
-+LIBRARY_DEPS = ../groupsock/libgroupsock.$(libgroupsock_LIB_SUFFIX) ../BasicUsageEnvironment/libBasicUsageEnvironment.$(libBasicUsageEnvironment_LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(libUsageEnvironment_LIB_SUFFIX) -lssl -lcrypto
++LIBRARY_DEPS = ../groupsock/libgroupsock.$(libgroupsock_LIB_SUFFIX) ../BasicUsageEnvironment/libBasicUsageEnvironment.$(libBasicUsageEnvironment_LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(libUsageEnvironment_LIB_SUFFIX)
 +
  $(LIVEMEDIA_LIB): $(LIVEMEDIA_LIB_OBJS) \
      $(PLATFORM_SPECIFIC_LIB_OBJS)
  	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) \
--		$(LIVEMEDIA_LIB_OBJS)
-+		$(LIVEMEDIA_LIB_OBJS) $(LIBRARY_LINK_DEPS)
+-		$(LIVEMEDIA_LIB_OBJS) $(LIBS_FOR_LIVEMEDIA_LIB)
++		$(LIVEMEDIA_LIB_OBJS) $(LIBRARY_LINK_DEPS) $(LIBS_FOR_LIVEMEDIA_LIB)
  
  Media.$(CPP):		include/Media.hh
  include/Media.hh:	include/liveMedia_version.hh
