@@ -8,15 +8,15 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2020.08.19
+Version:	2021.01.16
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	4645d2a0c865505c85b48af5317bcb4a
+# Source0-md5:	6370f3810a20be4fa98519d4781dedc4
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	a1eb14c713eb3a98b67000df0b81ac24
+# Source1-md5:	a7310cd38b859f905f46e7250047aa32
 Patch0:		%{name}-link.patch
 # from debian
 Patch1:		%{name}-pkgconfig.patch
@@ -150,9 +150,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libUsageEnvironment.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libUsageEnvironment.so.3
 %attr(755,root,root) %{_libdir}/libgroupsock.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgroupsock.so.8
+%attr(755,root,root) %ghost %{_libdir}/libgroupsock.so.26
 %attr(755,root,root) %{_libdir}/libliveMedia.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.81
+%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.89
 
 %files devel
 %defattr(644,root,root,755)
