@@ -1,5 +1,5 @@
---- live/BasicUsageEnvironment/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
-+++ live/BasicUsageEnvironment/Makefile.tail	2011-03-16 18:09:05.547417970 +0100
+--- live/live/BasicUsageEnvironment/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
++++ live/live/BasicUsageEnvironment/Makefile.tail	2011-03-16 18:09:05.547417970 +0100
 @@ -8,9 +8,11 @@
  	BasicTaskScheduler0.$(OBJ) BasicTaskScheduler.$(OBJ) \
  	DelayQueue.$(OBJ) BasicHashTable.$(OBJ)
@@ -13,11 +13,11 @@
  
  .$(C).$(OBJ):
  	$(C_COMPILER) -c $(C_FLAGS) $<       
---- live/groupsock/Makefile.tail.orig	2011-03-15 00:40:37.000000000 +0100
-+++ live/groupsock/Makefile.tail	2011-03-16 18:11:05.827411266 +0100
-@@ -25,10 +25,12 @@
+--- live-2021.04.06/live/groupsock/Makefile.tail.orig	2021-04-29 22:24:40.845013105 +0200
++++ live-2021.04.06/live/groupsock/Makefile.tail	2021-04-29 22:29:12.265873479 +0200
+@@ -24,10 +24,12 @@ NetInterface.$(CPP):	include/NetInterfac
  NetAddress.$(CPP):	include/NetAddress.hh include/GroupsockHelper.hh
- IOHandlers.$(CPP):	include/IOHandlers.hh include/TunnelEncaps.hh
+ IOHandlers.$(CPP):	include/IOHandlers.hh
  
 +LIBRARY_DEPS = ../BasicUsageEnvironment/libBasicUsageEnvironment.$(libBasicUsageEnvironment_LIB_SUFFIX) ../UsageEnvironment/libUsageEnvironment.$(libUsageEnvironment_LIB_SUFFIX)
 +
@@ -29,8 +29,8 @@
  
  clean:
  	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
---- live/liveMedia/Makefile.tail.orig	2020-05-19 19:11:05.573270651 +0200
-+++ live/liveMedia/Makefile.tail	2020-05-19 19:58:52.524405711 +0200
+--- live/live/liveMedia/Makefile.tail.orig	2020-05-19 19:11:05.573270651 +0200
++++ live/live/liveMedia/Makefile.tail	2020-05-19 19:58:52.524405711 +0200
 @@ -65,10 +65,12 @@
  
  LIVEMEDIA_LIB_OBJS = Media.$(OBJ) $(MISC_SOURCE_OBJS) $(MISC_SINK_OBJS) $(MISC_FILTER_OBJS) $(RTP_OBJS) $(RTCP_OBJS) $(GENERIC_MEDIA_SERVER_OBJS) $(RTSP_OBJS) $(SIP_OBJS) $(SESSION_OBJS) $(QUICKTIME_OBJS) $(AVI_OBJS) $(TRANSPORT_STREAM_TRICK_PLAY_OBJS) $(MATROSKA_OBJS) $(OGG_OBJS) $(TRANSPORT_STREAM_DEMUX_OBJS) $(HLS_OBJS) $(SECURITY_OBJS) $(MISC_OBJS)
@@ -45,10 +45,10 @@
  
  Media.$(CPP):		include/Media.hh
  include/Media.hh:	include/liveMedia_version.hh
---- live/Makefile.tail.orig	2011-03-16 19:18:57.767415456 +0100
-+++ live/Makefile.tail	2011-03-16 19:30:31.367419646 +0100
-@@ -10,10 +10,10 @@
- MEDIA_SERVER_DIR = mediaServer
+--- live-2021.04.06/live/Makefile.tail.orig	2021-04-29 22:24:40.848346613 +0200
++++ live-2021.04.06/live/Makefile.tail	2021-04-29 22:30:26.453086366 +0200
+@@ -14,10 +14,10 @@ PROXY_SERVER_DIR = proxyServer
+ HLS_PROXY_DIR = hlsProxy
  
  all:
 -	cd $(LIVEMEDIA_DIR) ; $(MAKE)
@@ -59,14 +59,14 @@
 +	cd $(LIVEMEDIA_DIR) ; $(MAKE)
  	cd $(TESTPROGS_DIR) ; $(MAKE)
  	cd $(MEDIA_SERVER_DIR) ; $(MAKE)
- 
---- live/config.linux-with-shared-libraries.orig	2020-03-17 21:29:48.897335650 +0100
-+++ live/config.linux-with-shared-libraries	2020-03-17 21:35:13.995574442 +0100
-@@ -39,6 +39,7 @@
+ 	cd $(PROXY_SERVER_DIR) ; $(MAKE)
+--- live-2021.04.06/live/config.linux-with-shared-libraries.orig	2021-04-29 22:24:40.848346613 +0200
++++ live-2021.04.06/live/config.linux-with-shared-libraries	2021-04-29 22:31:14.575602890 +0200
+@@ -39,6 +39,7 @@ LIBRARY_LINK =		$(CC) -o
  SHORT_LIB_SUFFIX =	so.$(shell expr $($(NAME)_VERSION_CURRENT) - $($(NAME)_VERSION_AGE))
  LIB_SUFFIX =	 	$(SHORT_LIB_SUFFIX).$($(NAME)_VERSION_AGE).$($(NAME)_VERSION_REVISION)
  LIBRARY_LINK_OPTS =	-shared -Wl,-soname,$(NAME).$(SHORT_LIB_SUFFIX) $(LDFLAGS)
 +LIBRARY_LINK_DEPS =	$(LIBRARY_DEPS)
  LIBS_FOR_CONSOLE_APPLICATION = -lssl -lcrypto
  LIBS_FOR_GUI_APPLICATION =
- EXE =
+ LIBS_FOR_LIVEMEDIA_LIB = -lssl -lcrypto

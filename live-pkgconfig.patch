@@ -1,15 +1,15 @@
 Description: Add a pkg-config file for the shared libraries.
 Author: Benjamin Drung <bdrung@debian.org>
 
---- a/Makefile.head
-+++ b/Makefile.head
+--- a/live/Makefile.head
++++ b/live/Makefile.head
 @@ -1 +1,4 @@
 +PREFIX = /usr/local
 +LIBDIR = /usr/local/lib
 +VERSION = $(shell grep LIVEMEDIA_LIBRARY_VERSION_STRING liveMedia/include/liveMedia_version.hh | sed 's/.*"\([^"]*\)".*/\1/')
  ##### Change the following for your environment:
 --- /dev/null
-+++ b/live555.pc.in
++++ b/live/live555.pc.in
 @@ -0,0 +1,9 @@
 +prefix=@PREFIX@
 +libdir=@LIBDIR@
@@ -20,11 +20,11 @@ Author: Benjamin Drung <bdrung@debian.org>
 +Version: @VERSION@
 +Cflags: -I${includedir}/liveMedia -I${includedir}/groupsock -I${includedir}/BasicUsageEnvironment -I${includedir}/UsageEnvironment
 +Libs: -L${libdir} -lliveMedia -lgroupsock -lBasicUsageEnvironment -lUsageEnvironment
---- a/Makefile.tail
-+++ b/Makefile.tail
-@@ -20,7 +20,12 @@
- 	cd $(MEDIA_SERVER_DIR) ; $(MAKE)
- 	cd $(PROXY_SERVER_DIR) ; $(MAKE)
+--- live-2021.04.06/live/Makefile.tail.orig	2021-04-29 22:32:18.998971852 +0200
++++ live-2021.04.06/live/Makefile.tail	2021-04-30 06:53:31.459794869 +0200
+@@ -25,7 +25,12 @@ all:
+ 	@echo
+ 	@echo "For more information about this source code (including your obligations under the LGPL), please see our FAQ at http://live555.com/liveMedia/faq.html"
  
 -install:
 +install_shared_libraries:

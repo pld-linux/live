@@ -76,10 +76,8 @@ Biblioteki statyczne LIVE555 do strumieni multimedialnych.
 
 %prep
 %setup -q -c
-%patch0 -p0
-cd live
+%patch0 -p1
 %patch1 -p1
-cd ..
 
 # disable building test programs
 %{__sed} -i -e '/cd \$(TESTPROGS_DIR)/d' live/Makefile.tail
