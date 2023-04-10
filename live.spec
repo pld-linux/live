@@ -8,15 +8,15 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2022.06.16
+Version:	2023.03.30
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	e9f877fa56ccc5f851dca461ae3bd4ab
+# Source0-md5:	2638706226f9d1a47fd43f4e184428dd
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	38087728822d2ed08f60be3dd8dfc115
+# Source1-md5:	a5c23d0828f2ada8519923117b432f40
 Patch0:		%{name}-link.patch
 # from debian
 Patch1:		%{name}-pkgconfig.patch
@@ -144,7 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libBasicUsageEnvironment.so.1
+%attr(755,root,root) %ghost %{_libdir}/libBasicUsageEnvironment.so.2
 %attr(755,root,root) %{_libdir}/libUsageEnvironment.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libUsageEnvironment.so.3
 %attr(755,root,root) %{_libdir}/libgroupsock.so.*.*.*
