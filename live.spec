@@ -104,7 +104,7 @@ cd live-static
 	CPLUSPLUS_COMPILER="%{__cxx}" \
 	CPPFLAGS="%{rpmcppflags} %{!?with_atomic_flag:-DNO_STD_LIB}" \
 	CFLAGS="%{rpmcflags} -fPIC" \
-	CXXFLAGS="%{rpmcxxflags} -fPIC"
+	CXXFLAGS="%{rpmcxxflags} -fPIC %{?with_atomic_flag:-std=c++20}"
 cd ..
 %endif
 
@@ -115,7 +115,7 @@ cd live-shared
 	CPLUSPLUS_COMPILER="%{__cxx}" \
 	CPPFLAGS="%{rpmcppflags} %{!?with_atomic_flag:-DNO_STD_LIB}" \
 	CFLAGS="%{rpmcflags}" \
-	CXXFLAGS="%{rpmcxxflags}" \
+	CXXFLAGS="%{rpmcxxflags} %{?with_atomic_flag:-std=c++20}" \
 	LIBRARY_LINK="%{__cxx} -o"
 
 %install
