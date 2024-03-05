@@ -4,24 +4,29 @@
 #
 # Conditional build:
 %bcond_without	static_libs	# static libraries
+%bcond_without	atomic_flag	# C++20 std::atomic_flag functionality
 
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2023.03.30
+Version:	2024.02.28
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	2638706226f9d1a47fd43f4e184428dd
+# Source0-md5:	8c4a142349abbdf6e5e24813c7a15501
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	a5c23d0828f2ada8519923117b432f40
+# Source1-md5:	000f6435ea418b0365f68d83edd7a361
 Patch0:		%{name}-link.patch
 # from debian
 Patch1:		%{name}-pkgconfig.patch
 URL:		http://www.live555.com/liveMedia/
+%if %{with atomic_flag}
+BuildRequires:	libstdc++-devel >= 6:11
+%else
 BuildRequires:	libstdc++-devel
+%endif
 BuildRequires:	openssl-devel
 BuildRequires:	sed >= 4.0
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
@@ -97,7 +102,7 @@ cd live-static
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
-	CPPFLAGS="%{rpmcppflags}" \
+	CPPFLAGS="%{rpmcppflags} %{!?with_atomic_flag:-DNO_STD_LIB}" \
 	CFLAGS="%{rpmcflags} -fPIC" \
 	CXXFLAGS="%{rpmcxxflags} -fPIC"
 cd ..
@@ -108,7 +113,7 @@ cd live-shared
 %{__make} \
 	C_COMPILER="%{__cc}" \
 	CPLUSPLUS_COMPILER="%{__cxx}" \
-	CPPFLAGS="%{rpmcppflags}" \
+	CPPFLAGS="%{rpmcppflags} %{!?with_atomic_flag:-DNO_STD_LIB}" \
 	CFLAGS="%{rpmcflags}" \
 	CXXFLAGS="%{rpmcxxflags}" \
 	LIBRARY_LINK="%{__cxx} -o"
@@ -150,7 +155,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libgroupsock.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgroupsock.so.30
 %attr(755,root,root) %{_libdir}/libliveMedia.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.107
+%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.112
 
 %files devel
 %defattr(644,root,root,755)
