@@ -9,15 +9,15 @@
 Summary:	LIVE555 streaming media server
 Summary(pl.UTF-8):	LIVE555 - serwer strumieni multimedialnych
 Name:		live
-Version:	2025.05.08
+Version:	2025.12.26
 Release:	1
 Epoch:		2
 License:	LGPL v2.1+
 Group:		Applications/Multimedia
 Source0:	http://www.live555.com/liveMedia/public/%{name}.%{version}.tar.gz
-# Source0-md5:	9e773183dcfc1920fdedbff3abf9306c
+# Source0-md5:	1a0245c06930b4a9ab2ec8d66ee0b0b7
 Source1:	http://www.live555.com/liveMedia/public/changelog.txt
-# Source1-md5:	3b734604793d37f828960e4158456dac
+# Source1-md5:	4bfb001692b44e217f28cbc936c42f59
 Patch0:		%{name}-link.patch
 # from debian
 Patch1:		%{name}-pkgconfig.patch
@@ -148,22 +148,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libBasicUsageEnvironment.so.2
-%attr(755,root,root) %{_libdir}/libUsageEnvironment.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libUsageEnvironment.so.3
-%attr(755,root,root) %{_libdir}/libgroupsock.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgroupsock.so.30
-%attr(755,root,root) %{_libdir}/libliveMedia.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libliveMedia.so.116
+%{_libdir}/libBasicUsageEnvironment.so.*.*.*
+%ghost %{_libdir}/libBasicUsageEnvironment.so.2
+%{_libdir}/libUsageEnvironment.so.*.*.*
+%ghost %{_libdir}/libUsageEnvironment.so.3
+%{_libdir}/libgroupsock.so.*.*.*
+%ghost %{_libdir}/libgroupsock.so.30
+%{_libdir}/libliveMedia.so.*.*.*
+%ghost %{_libdir}/libliveMedia.so.117
 
 %files devel
 %defattr(644,root,root,755)
 %doc ChangeLog.txt
-%attr(755,root,root) %{_libdir}/libBasicUsageEnvironment.so
-%attr(755,root,root) %{_libdir}/libUsageEnvironment.so
-%attr(755,root,root) %{_libdir}/libgroupsock.so
-%attr(755,root,root) %{_libdir}/libliveMedia.so
+%{_libdir}/libBasicUsageEnvironment.so
+%{_libdir}/libUsageEnvironment.so
+%{_libdir}/libgroupsock.so
+%{_libdir}/libliveMedia.so
 %{_includedir}/BasicUsageEnvironment
 %{_includedir}/UsageEnvironment
 %{_includedir}/groupsock
